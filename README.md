@@ -3,7 +3,7 @@
 ## how to run qemu
 
 - install `arm-none-eabi-` toolchain on your ubuntu.
-- download qemu using `qemuinstall.sh`
+- download qemu using `qemu_install.sh`
 - `make run`
 
 ## compile_commands.json
