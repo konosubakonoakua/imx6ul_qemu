@@ -1,15 +1,15 @@
 # README
 
-## how to run
+## how to run qemu
 
 - install `arm-none-eabi-` toolchain on your ubuntu.
 - download qemu using `qemuinstall.sh`
 - `make run`
 
-## clangd json
+## compile_commands.json
 
 ```bash
-sudo apt install bear
+# sudo apt install bear
 make clangd
 ```
 
@@ -23,3 +23,4 @@ make clangd
 - [zynq-7000 uboot i2c](https://xilinx-wiki.atlassian.net/wiki/spaces/A/pages/18842029/U-Boot+I2C+Driver)
 - [qemu custom SOC](http://t.csdnimg.cn/imboU)
 - [qemu arm bysbox rootfs linux5](http://t.csdnimg.cn/W7ywM)
+- [linuxfromscratch](https://www.linuxfromscratch.org/)
