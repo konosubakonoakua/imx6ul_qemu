@@ -24,7 +24,7 @@ objs := start.o \
 		fatfs/ffunicode.o
 
 6ul_bare_metal.bin: $(objs)
-	${LD} -T 6ul_bare_metal.ld -o 6ul_bare_metal.elf $^
+	${LD} -T 6ul_bare_metal.ld -o 6ul_bare_metal.elf $(filter-out qemu_install, $^)
 	${OBJCOPY} -O binary -S 6ul_bare_metal.elf $@
 	${OBJDUMP} -D -m arm 6ul_bare_metal.elf > 6ul_bare_metal.dis
 
@@ -38,28 +38,32 @@ clangd: clean
 	)
 	bear --output compile_commands.json -- make -j
 
-run: $(objs)
-	${LD} -T 6ul_bare_metal.ld -o 6ul_bare_metal.elf $^
+qemu_install:
+	@set -e
+	@bash -c "./qemu_install.sh"
+
+run: $(objs) qemu_install
+	${LD} -T 6ul_bare_metal.ld -o 6ul_bare_metal.elf $(filter-out qemu_install, $^)
 	${OBJCOPY} -O binary -S 6ul_bare_metal.elf 6ul_bare_metal.bin
 	${OBJDUMP} -D -m arm 6ul_bare_metal.elf > 6ul_bare_metal.dis
 	./qemu/bin/qemu-system-arm -M mcimx6ul-evk -show-cursor -m 512M -kernel 6ul_bare_metal.elf \
  	-display sdl -serial mon:stdio \
  	-nic user -com 100ask -sd test.img
 
-nogui: $(objs)
-	${LD} -T 6ul_bare_metal.ld -o 6ul_bare_metal.elf $^
+nogui: $(objs) qemu_install
+	${LD} -T 6ul_bare_metal.ld -o 6ul_bare_metal.elf $(filter-out qemu_install, $^)
 	${OBJCOPY} -O binary -S 6ul_bare_metal.elf 6ul_bare_metal.bin
 	${OBJDUMP} -D -m arm 6ul_bare_metal.elf > 6ul_bare_metal.dis
 	./qemu/bin/qemu-system-arm -M mcimx6ul-evk -m 512M -kernel 6ul_bare_metal.elf -serial mon:stdio -nographic -sd test.img
 
-fatfs: $(objs)
-	${LD} -T 6ul_bare_metal.ld -o 6ul_bare_metal.elf $^
+fatfs: $(objs) qemu_install
+	${LD} -T 6ul_bare_metal.ld -o 6ul_bare_metal.elf $(filter-out qemu_install, $^)
 	${OBJCOPY} -O binary -S 6ul_bare_metal.elf 6ul_bare_metal.bin
 	${OBJDUMP} -D -m arm 6ul_bare_metal.elf > 6ul_bare_metal.dis
 	./qemu/bin/qemu-system-arm -M mcimx6ul-evk -m 512M -kernel 6ul_bare_metal.elf -serial mon:stdio -nographic -sd testfs.img
 
-debug: $(objs)
-	${LD} -T 6ul_bare_metal.ld -o 6ul_bare_metal.elf $^
+debug: $(objs) qemu_install
+	${LD} -T 6ul_bare_metal.ld -o 6ul_bare_metal.elf $(filter-out qemu_install, $^)
 	${OBJCOPY} -O binary -S 6ul_bare_metal.elf 6ul_bare_metal.bin
 	${OBJDUMP} -D -m arm 6ul_bare_metal.elf > 6ul_bare_metal.dis
 	./qemu/bin/qemu-system-arm -M mcimx6ul-evk  -show-cursor -m 512M -kernel 6ul_bare_metal.elf \
@@ -74,3 +78,6 @@ debug: $(objs)
 
 clean:
 	rm -rf *.o *.elf *.bin *.dis driver/*.o device/*.o fatfs/*.o
+
+
+.PHONY: qemu_install run clean debug fatfs nogui clangd
