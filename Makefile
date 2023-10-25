@@ -28,7 +28,14 @@ objs := start.o \
 	${OBJCOPY} -O binary -S 6ul_bare_metal.elf $@
 	${OBJDUMP} -D -m arm 6ul_bare_metal.elf > 6ul_bare_metal.dis
 
+SHELL := /bin/bash
 clangd: clean
+	$(shell \
+	set -e;\
+	deps=(bear);\
+	dpkg -s $${deps[*]} >/dev/null;\
+	[[ ! $$? -eq 0 ]] && sudo apt install $${deps[*]};\
+	)
 	bear --output compile_commands.json -- make -j
 
 run: $(objs)
