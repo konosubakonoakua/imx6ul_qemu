@@ -15,6 +15,7 @@ make clangd
 
 ## external links
 
+- [100ask qemu](http://wiki.100ask.org/Qemu)
 - [imx6ull homepage](https://www.nxp.com/products/processors-and-microcontrollers/arm-processors/i-mx-applications-processors/i-mx-6-processors/i-mx-6ull-single-core-processor-with-arm-cortex-a7-core:i.MX6ULL)
 - [rpi4 uboot initramfs](https://hechao.li/2021/12/20/Boot-Raspberry-Pi-4-Using-uboot-and-Initramfs/)
 - [elinux rpi uboot wiki](https://elinux.org/RPi_U-Boot)
